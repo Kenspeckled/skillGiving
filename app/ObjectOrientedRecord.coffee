@@ -12,7 +12,10 @@ class ObjectOrientedRecord
         collection = db.collection(@name)
         collection.insert obj, (err, result) ->
           db.close()
-          resolve()
+          if err
+            reject(err)
+          else
+            resolve(obj)
 
   @update = (id, obj) ->
     self = this
@@ -36,8 +39,15 @@ class ObjectOrientedRecord
       MongoClient.connect url, (err, db) =>
         collection = db.collection(@name)
         foundObj = collection.findOne query, (err, item) ->
-          console.log item
           db.close()
           resolve(item)
+
+  @where = (query) ->
+    new Promise (resolve, reject) =>
+      MongoClient.connect url, (err, db) =>
+        collection = db.collection(@name)
+        foundObj = collection.find(query).toArray (err, items) ->
+          db.close()
+          resolve(items)
 
 module.exports = ObjectOrientedRecord
