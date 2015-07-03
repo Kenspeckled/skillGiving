@@ -1,0 +1,12 @@
+doctype html
+html
+  head
+    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css")
+    link(href="/assets/stylesheets/styles.min.css", rel="stylesheet")
+  body
+    #content.master-container!= content
+
+    script(type='text/javascript', src="/app.js")
+    if props
+      script(type='text/javascript').
+        dataCache.setObject(!{props});
