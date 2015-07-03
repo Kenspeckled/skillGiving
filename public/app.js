@@ -125,7 +125,45 @@ module.exports = jobPostingController;
 
 
 
-},{"views/components/jobPosting/Index.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/jobPosting/Index.coffee","views/components/jobPosting/Show.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/jobPosting/Show.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/clientRouter/ClientRouter.coffee":[function(require,module,exports){
+},{"views/components/jobPosting/Index.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/jobPosting/Index.coffee","views/components/jobPosting/Show.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/jobPosting/Show.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/client/controllers/user.coffee":[function(require,module,exports){
+var SignUp, userController;
+
+SignUp = require('views/components/user/SignUp.coffee');
+
+userController = {
+  "new": function() {
+    var props;
+    props = {};
+    return React.render(React.createElement(SignUp, props), document.getElementById('content'));
+  }
+};
+
+module.exports = userController;
+
+
+
+},{"views/components/user/SignUp.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/user/SignUp.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/client/models/User.coffee":[function(require,module,exports){
+var User;
+
+User = (function() {
+  function User() {}
+
+  User.create = function(opts) {
+    return new Promise(function(r) {
+      console.log(opts);
+      return r();
+    });
+  };
+
+  return User;
+
+})();
+
+module.exports = User;
+
+
+
+},{}],"/home/richard/projects/kenspeckle/skillGiving/app/clientRouter/ClientRouter.coffee":[function(require,module,exports){
 var ClientRouter, Context, Route,
   slice = [].slice;
 
@@ -482,16 +520,19 @@ global.Promise = require('promise');
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"lodash":"/home/richard/projects/kenspeckle/skillGiving/node_modules/lodash/index.js","promise":"/home/richard/projects/kenspeckle/skillGiving/node_modules/promise/index.js","react":"/home/richard/projects/kenspeckle/skillGiving/node_modules/react/react.js"}],"/home/richard/projects/kenspeckle/skillGiving/app/routes.coffee":[function(require,module,exports){
-var homeController, jobPostingController, routes;
+var homeController, jobPostingController, routes, userController;
 
 homeController = require('controllers/home.coffee');
 
 jobPostingController = require('controllers/jobPosting.coffee');
 
+userController = require('controllers/user.coffee');
+
 routes = function(router) {
   router.get('/', homeController.index);
   router.get('/job-postings', jobPostingController.index);
   router.get('/job-posting/:id', jobPostingController.show);
+  router.get('/sign-up', userController["new"]);
   if (_scriptContext.isClient) {
     return router.start();
   } else if (_scriptContext.isServer) {
@@ -503,7 +544,7 @@ module.exports = routes;
 
 
 
-},{"controllers/home.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/client/controllers/home.coffee","controllers/jobPosting.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/client/controllers/jobPosting.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/views/components/footer/Footer.coffee":[function(require,module,exports){
+},{"controllers/home.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/client/controllers/home.coffee","controllers/jobPosting.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/client/controllers/jobPosting.coffee","controllers/user.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/client/controllers/user.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/views/components/footer/Footer.coffee":[function(require,module,exports){
 var Footer, div, footer, ref;
 
 ref = React.DOM, footer = ref.footer, div = ref.div;
@@ -726,7 +767,122 @@ module.exports = JobPostingsShow;
 
 
 
-},{"views/layouts/base.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/layouts/base.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/views/layouts/base.coffee":[function(require,module,exports){
+},{"views/layouts/base.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/layouts/base.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/views/components/user/SignUp.coffee":[function(require,module,exports){
+var BaseLayout, User, UserSignUp, button, div, form, input, label, ref;
+
+BaseLayout = require('views/layouts/base.coffee');
+
+User = require('models/User.coffee');
+
+ref = React.DOM, div = ref.div, label = ref.label, input = ref.input, form = ref.form, button = ref.button;
+
+UserSignUp = React.createClass({
+  displayName: 'UserSignUp',
+  getInitialState: function() {
+    return {
+      formData: {},
+      passwordConfirmationIsValid: ''
+    };
+  },
+  handleSubmit: function(ev) {
+    ev.preventDefault();
+    if (this.state.passwordConfirmationIsValid) {
+      return User.create(this.state.formData).then(function(user) {
+        return ClientRouter.show('/');
+      });
+    }
+  },
+  handleFormChange: function(ev) {
+    return this.state.formData[ev.target.name] = ev.target.value;
+  },
+  validatePasswordConfirmation: function(ev) {
+    var password, passwordConfirmation;
+    passwordConfirmation = ev.target.value;
+    password = this.state.formData.password;
+    if (passwordConfirmation.length >= password.length) {
+      if (passwordConfirmation !== password) {
+        return this.setState({
+          passwordConfirmationIsValid: false
+        });
+      } else if (passwordConfirmation = password) {
+        return this.setState({
+          passwordConfirmationIsValid: true
+        });
+      }
+    } else {
+      return this.setState({
+        passwordConfirmationIsValid: ''
+      });
+    }
+  },
+  render: function() {
+    return React.createElement(BaseLayout, this.props, form({
+      className: 'sign-up',
+      onSubmit: this.handleSubmit,
+      onChange: this.handleFormChange
+    }, div({
+      className: 'row'
+    }, div({
+      className: 'field'
+    }, div({
+      className: 'col-sm-4'
+    }, label({
+      className: 'label'
+    }, 'Email')), div({
+      className: 'col-sm-8'
+    }, input({
+      className: 'input',
+      name: 'email',
+      type: 'text',
+      autoComplete: 'false'
+    })))), div({
+      className: 'row'
+    }, div({
+      className: 'field'
+    }, div({
+      className: 'col-sm-4'
+    }, label({
+      className: 'label'
+    }, 'Password')), div({
+      className: 'col-sm-8'
+    }, input({
+      className: 'input',
+      name: 'password',
+      type: 'password',
+      autoComplete: 'false'
+    })))), div({
+      className: 'row'
+    }, div({
+      className: 'field'
+    }, div({
+      className: 'col-sm-4'
+    }, label({
+      className: 'label'
+    }, 'Confirm Password')), div({
+      className: 'col-sm-8'
+    }, input({
+      className: 'input ' + (this.state.passwordConfirmationIsValid === true ? 'valid' : this.state.passwordConfirmationIsValid === false ? 'invalid' : ''),
+      name: 'passwordConfirmation',
+      type: 'password',
+      autoComplete: 'false',
+      onChange: this.validatePasswordConfirmation
+    })))), div({
+      className: 'row'
+    }, div({
+      className: 'col-sm-12'
+    }, div({
+      className: 'text-right'
+    }, button({
+      className: 'btn btn-primary'
+    }, 'Create Account'))))));
+  }
+});
+
+module.exports = UserSignUp;
+
+
+
+},{"models/User.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/client/models/User.coffee","views/layouts/base.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/layouts/base.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/views/layouts/base.coffee":[function(require,module,exports){
 var BaseLayout, Footer, Header, div;
 
 Header = require('views/components/header/Header.coffee');

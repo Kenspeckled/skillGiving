@@ -1169,3 +1169,17 @@ textarea.input {
   .job-posting-show .job-desc {
     font-size: 14px;
     padding-top: 30px; }
+
+/*******************/
+/* User > Sign up  */
+/*******************/
+.sign-up {
+  margin: 25%; }
+  .sign-up .field {
+    margin: 5px 0; }
+  .sign-up button {
+    margin: 20px 0; }
+  .sign-up .valid {
+    background-color: green; }
+  .sign-up .invalid {
+    background-color: red; }
