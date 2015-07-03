@@ -1,6 +1,6 @@
 Home = require 'views/components/home/Home.coffee'
 
-homeController = 
+homeController =
 
   index: (req, res) ->
     props = {}
