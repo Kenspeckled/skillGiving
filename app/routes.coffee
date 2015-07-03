@@ -12,7 +12,7 @@ routes = (router) ->
   else if _scriptContext.isServer
     console.log "do nothing"
 
-    router.post '/api/createJobPosting', jobPostingController.createAPI
+    # router.post '/api/createJobPosting', jobPostingController.createAPI
 
 
 

@@ -9,6 +9,6 @@ Header = React.createClass
       div className: 'container',
         div className: 'row',
           div className: 'col-sm-12',
-            div null, "Header"
+            div null, 'Skill Giving'
 
 module.exports = Header
