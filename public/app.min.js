@@ -528,6 +528,11 @@ ref = React.DOM, header = ref.header, div = ref.div;
 
 Header = React.createClass({
   displayName: 'Header',
+  getInitialState: function() {
+    return {
+      'karma': 25
+    };
+  },
   render: function() {
     return header({
       id: 'site-header'
@@ -536,8 +541,16 @@ Header = React.createClass({
     }, div({
       className: 'row'
     }, div({
-      className: 'col-sm-12'
-    }, div(null, 'Skill Giving')))));
+      className: 'col-sm-8'
+    }, div(null, 'Skill Giving')), div({
+      className: 'col-sm-2'
+    }, div({
+      className: 'karma-level'
+    }, 'Karma: ' + this.state.karma)), div({
+      className: 'col-sm-2'
+    }, div({
+      className: 'user-account'
+    }, 'Account')))));
   }
 });
 
@@ -655,20 +668,57 @@ module.exports = JobPostingsIndex;
 
 
 },{"views/layouts/base.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/layouts/base.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/views/components/jobPosting/Show.coffee":[function(require,module,exports){
-var BaseLayout, JobPostingsShow, div;
+var BaseLayout, JobPostingsShow, a, div, job, ref;
 
 BaseLayout = require('views/layouts/base.coffee');
 
-div = React.DOM.div;
+ref = React.DOM, div = ref.div, a = ref.a;
+
+job = {
+  'user': 'one',
+  'bounty': 5,
+  'title': 'Clean my garden',
+  'location': 'Edinburgh',
+  'description': "Please clean up my mess. Squirrels have been wrecking havok on my garden and I just don't know what to do any more",
+  'jobType': 'gardening',
+  'jobCloses': '10/12/15',
+  'url': 'garden'
+};
 
 JobPostingsShow = React.createClass({
   displayName: 'JobPostingsShow',
   render: function() {
     return React.createElement(BaseLayout, this.props, div({
+      className: 'job-posting-show'
+    }, div({
       className: "row"
     }, div({
-      className: "col-sm-12"
-    }, div(null, "Show"))));
+      className: 'col-sm-12'
+    }, div({
+      className: 'job-title'
+    }, job.title)), div({
+      className: 'col-sm-3'
+    }, div({
+      className: 'job-location'
+    }, job.location)), div({
+      className: 'col-sm-3'
+    }, div({
+      className: 'job-type'
+    }, job.jobType)), div({
+      className: 'col-sm-3'
+    }, div({
+      className: 'job-bounty'
+    }, job.bounty + ' Karma')), div({
+      className: 'col-sm-3'
+    }, div({
+      className: 'job-closes'
+    }, 'Open until ' + job.jobCloses))), div({
+      className: 'row'
+    }, div({
+      className: 'col-sm-12'
+    }, div({
+      className: 'job-desc'
+    }, job.description)))));
   }
 });
 
