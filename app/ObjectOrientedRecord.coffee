@@ -1,16 +1,43 @@
+Promise = require 'promise'
+
 class ObjectOrientedRecord
 
-  MongoClient = require('mongodb').MongoClient
-  url = 'mongodb://localhost:27017/test'
+  url = 'mongodb://localhost:27017/skillGivingApi'
 
-  create = (obj) ->
-    new Promise (resolve, reject) ->
+  @name = "ObjectOrientedRecord"
+
+  @create = (obj) ->
+    new Promise (resolve, reject) =>
       MongoClient.connect url, (err, db) =>
-        console.log 'Connected to ' + db
+        collection = db.collection(@name)
+        collection.insert obj, (err, result) ->
+          db.close()
+          resolve()
 
-        db.collection(@name).insertOne(obj)
+  @update = (id, obj) ->
+    self = this
+    new Promise (resolve, reject) =>
+      MongoClient.connect url, (err, db) =>
+        collection = db.collection(@name)
+        collection.update {id: id}, $set: obj, ->
+          db.close()
+          resolve()
 
+  @find = (id) ->
+    new Promise (resolve, reject) =>
+      MongoClient.connect url, (err, db) =>
+        collection = db.collection(@name)
+        foundObject = collection.find({id: id})
         db.close()
-        resolve()
+        resolve(foundObject)
+
+  @findBy = (query) ->
+    new Promise (resolve, reject) =>
+      MongoClient.connect url, (err, db) =>
+        collection = db.collection(@name)
+        foundObj = collection.findOne query, (err, item) ->
+          console.log item
+          db.close()
+          resolve(item)
 
 module.exports = ObjectOrientedRecord
