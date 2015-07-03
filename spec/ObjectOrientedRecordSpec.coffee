@@ -1,10 +1,13 @@
 _ = require 'lodash'
 Promise = require 'promise'
+MongoClient = require('mongodb').MongoClient
 
 describe 'ObjectOrientedRecord', ->
 
-  beforeAll (done) ->
+  beforeAll ->
     @ObjectOrientedRecord = require '../app/ObjectOrientedRecord.coffee'
+
+  beforeEach (done) ->
     url = 'mongodb://localhost:27017/skillGivingApi'
     MongoClient.connect url, (err, db) =>
       collection = db.collection(@ObjectOrientedRecord.name)
@@ -55,3 +58,21 @@ describe 'ObjectOrientedRecord', ->
       @ObjectOrientedRecord.where(colour: "yellow").then (result) =>
         expect(result).toEqual []
         done()
+
+  describe 'destroy', ->
+
+    beforeEach (done) ->
+      testObj1 = @ObjectOrientedRecord.create name: "Andy", colour: "green", number: 1
+      testObj2 = @ObjectOrientedRecord.create name: "John", colour: "blue", number: 2
+      testObj3 = @ObjectOrientedRecord.create name: "Ellen", colour: "red", number: 2
+      testObj4 = @ObjectOrientedRecord.create name: "Jane", colour: "green", number: 3
+      Promise.all([testObj1, testObj2, testObj3, testObj4]).then (result) =>
+        [@testObj1, @testObj2, @testObj3, @testObj4] = result
+        done()
+
+    it 'should return remove the record', (done) ->
+      @ObjectOrientedRecord.destroy(@testObj1._id).then =>
+        @ObjectOrientedRecord.where({}).then (result) =>
+          expect(result.length).toEqual 3
+          expect(result).not.toContain @testObj1
+          done()

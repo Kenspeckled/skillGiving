@@ -52,4 +52,13 @@ class ObjectOrientedRecord
           db.close()
           resolve(items)
 
+  @destroy = (id) ->
+    new Promise (resolve, reject) =>
+      MongoClient.connect url, (err, db) =>
+        collection = db.collection(@name)
+        #collection.remove (err, item) ->
+        collection.remove {"_id": new ObjectID(id)}, (err, item) ->
+          db.close()
+          resolve(item)
+
 module.exports = ObjectOrientedRecord
