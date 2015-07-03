@@ -34,7 +34,7 @@ UserSignUp = React.createClass
 
   render: ->
     React.createElement BaseLayout, @props,
-      form className: 'sign-up', onSubmit: @handleSubmit, onChange: @handleFormChange,
+      form className: 'sign-up form', onSubmit: @handleSubmit, onChange: @handleFormChange,
         div className: 'row',
           div className: 'field',
             div className: 'col-sm-4',

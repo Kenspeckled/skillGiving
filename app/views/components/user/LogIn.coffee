@@ -13,6 +13,8 @@ UserLogIn = React.createClass
 
   handleSubmit: (ev) ->
     onSuccess = (user) =>
+      #ajax request passing userId to assign a cookie
+      console.log user
       ClientRouter.show('/')
     onFailure = (error) =>
       console.log "error", error
@@ -21,11 +23,16 @@ UserLogIn = React.createClass
     User.find(@state.formData).then onSuccess, onFailure
 
   handleFormChange: (ev) ->
+    @setState error: ''
     @state.formData[ev.target.name] = ev.target.value #FIXME - this works but we shouldn't update state directly like this.
 
   render: ->
     React.createElement BaseLayout, @props,
-      form className: 'log-in', onSubmit: @handleSubmit, onChange: @handleFormChange,
+      form className: 'log-in form', onSubmit: @handleSubmit, onChange: @handleFormChange,
+        if @props.warning
+          div className: 'row',
+            div className: 'col-sm-12',
+              div className: 'warning-message', @props.warning
         if @state.error
           div className: 'row',
             div className: 'col-sm-12',

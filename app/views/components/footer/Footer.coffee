@@ -6,6 +6,6 @@ Footer = React.createClass
 
   render: ->
     footer className: 'footer',
-      div null, "Footer"
+      # div null, "Footer"
 
 module.exports = Footer

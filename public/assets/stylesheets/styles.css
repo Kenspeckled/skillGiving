@@ -1124,6 +1124,23 @@ textarea.input {
   .input-group .input-with-label {
     padding: 4px 10px 4px 40px; }
 
+/************/
+/*   Form   */
+/************/
+.form {
+  margin: 20%; }
+  .form .field {
+    margin: 5px 0; }
+  .form button {
+    margin: 20px 0; }
+  .form .valid {
+    background-color: green; }
+  .form .invalid {
+    background-color: red; }
+  .form .error-message {
+    color: red;
+    text-align: center; }
+
 /***********/
 /* Header  */
 /***********/
@@ -1139,8 +1156,7 @@ textarea.input {
 .footer {
   background-color: #2D2A27;
   color: white;
-  font-size: 20px;
-  padding: 20px; }
+  font-size: 20px; }
 
 /************************/
 /* Job Posting > Index  */
@@ -1170,33 +1186,15 @@ textarea.input {
     font-size: 14px;
     padding-top: 30px; }
 
+/**********************/
+/* Job Posting > New  */
+/**********************/
+.job-posting-new {
+  margin: 10%; }
+
 /*******************/
 /* User > Sign up  */
 /*******************/
-.sign-up {
-  margin: 25%; }
-  .sign-up .field {
-    margin: 5px 0; }
-  .sign-up button {
-    margin: 20px 0; }
-  .sign-up .valid {
-    background-color: green; }
-  .sign-up .invalid {
-    background-color: red; }
-
 /******************/
 /* User > Log In  */
 /******************/
-.log-in {
-  margin: 25%; }
-  .log-in .field {
-    margin: 5px 0; }
-  .log-in button {
-    margin: 20px 0; }
-  .log-in .valid {
-    background-color: green; }
-  .log-in .invalid {
-    background-color: red; }
-  .log-in .error-message {
-    color: red;
-    text-align: center; }
