@@ -1,5 +1,6 @@
 Promise = require 'promise'
 MongoClient = require('mongodb').MongoClient
+ObjectID = require('mongodb').ObjectID
 
 class ObjectOrientedRecord
 
@@ -31,9 +32,9 @@ class ObjectOrientedRecord
     new Promise (resolve, reject) =>
       MongoClient.connect url, (err, db) =>
         collection = db.collection(@name)
-        foundObject = collection.find({id: id})
-        db.close()
-        resolve(foundObject)
+        collection.findOne {"_id": new ObjectID(id)}, (err, item) ->
+          db.close()
+          resolve(item)
 
   @findBy = (query) ->
     new Promise (resolve, reject) =>

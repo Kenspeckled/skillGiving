@@ -3,7 +3,7 @@ Promise = require 'promise'
 
 describe 'ObjectOrientedRecord', ->
 
-  beforeEach (done) ->
+  beforeAll (done) ->
     @ObjectOrientedRecord = require '../app/ObjectOrientedRecord.coffee'
     url = 'mongodb://localhost:27017/skillGivingApi'
     MongoClient.connect url, (err, db) =>
@@ -11,10 +11,16 @@ describe 'ObjectOrientedRecord', ->
       collection.remove({})
       done()
 
-  #afterEach ->
+  describe 'find', ->
 
-  #afterEach ->
-
+    it 'should insert an entry and then find it', (done) ->
+      testObj = name: "Andy", colour: "blue", number: 42
+      createPromise = @ObjectOrientedRecord.create(testObj)
+      createPromise.then (createdObject) =>
+        findPromise = @ObjectOrientedRecord.find(createdObject._id)
+        findPromise.then (foundObject) ->
+          expect(foundObject).toEqual testObj
+          done()
 
   describe 'findBy', ->
 
@@ -35,7 +41,6 @@ describe 'ObjectOrientedRecord', ->
       testObj3 = @ObjectOrientedRecord.create name: "Ellen", colour: "red", number: 2
       testObj4 = @ObjectOrientedRecord.create name: "Jane", colour: "green", number: 3
       Promise.all([testObj1, testObj2, testObj3, testObj4]).then (result) =>
-        console.log result
         [@testObj1, @testObj2, @testObj3, @testObj4] = result
         done()
 
@@ -44,4 +49,9 @@ describe 'ObjectOrientedRecord', ->
         expect(result).toContain @testObj1
         expect(result).toContain @testObj4
         expect(result.length).toEqual 2
+        done()
+
+    it 'should return an empty array when no documents match', (done) ->
+      @ObjectOrientedRecord.where(colour: "yellow").then (result) =>
+        expect(result).toEqual []
         done()
