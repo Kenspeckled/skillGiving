@@ -13,9 +13,12 @@ UserLogIn = React.createClass
 
   handleSubmit: (ev) ->
     onSuccess = (user) =>
-      #ajax request passing userId to assign a cookie
+      document.cookie = 'sessionID='+user.id
       console.log user
-      ClientRouter.show('/')
+      if @props.warning
+        ClientRouter.show('/job-postings/new')
+      else
+        ClientRouter.show('/job-postings')
     onFailure = (error) =>
       console.log "error", error
       @setState error: error

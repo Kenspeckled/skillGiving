@@ -3,7 +3,7 @@ class User
   @create = (opts) ->
     new Promise (r) ->
       console.log opts
-      r()
+      r(id: 'userID')
 
   @find = (opts) ->
     new Promise (resolve, reject) ->
@@ -11,6 +11,6 @@ class User
       if _.isEmpty(opts)
         reject('Incorrect username or password')
       else
-        resolve('userId')
+        resolve(id: 'userId')
 
 module.exports = User

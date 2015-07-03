@@ -15,7 +15,8 @@ UserSignUp = React.createClass
     ev.preventDefault()
     if @state.passwordConfirmationIsValid
       User.create(@state.formData).then (user) ->
-        ClientRouter.show('/')
+        document.cookie = 'sessionID='+user.id
+        ClientRouter.show('/job-postings')
 
   handleFormChange: (ev) ->
     @state.formData[ev.target.name] = ev.target.value #FIXME - this works but we shouldn't update state directly like this.

@@ -19,19 +19,21 @@ jobPostingController =
       document.getElementById('content')
     )
 
-  new: -> #how to get access to cookies? AJAX call?
-    # if req.cookies.session
-    props = {}
-    React.render(
-      React.createElement(New, props),
-      document.getElementById('content')
-    )
-    # else
-    #   props = {warning: 'You must be logged in to create a job posting'}
-    #   React.render(
-    #     React.createElement(LogIn, props),
-    #     document.getElementById('content')
-    #   )
+  new: ->
+    cookie = document.cookie
+    console.log cookie
+    if cookie
+      props = {}
+      React.render(
+        React.createElement(New, props),
+        document.getElementById('content')
+      )
+    else #This should redirect
+      props = {warning: 'You must be logged in to create a job posting'}
+      React.render(
+        React.createElement(LogIn, props),
+        document.getElementById('content')
+      )
 
 module.exports = jobPostingController
 

@@ -124,9 +124,18 @@ jobPostingController = {
     return React.render(React.createElement(Show, props), document.getElementById('content'));
   },
   "new": function() {
-    var props;
-    props = {};
-    return React.render(React.createElement(New, props), document.getElementById('content'));
+    var cookie, props;
+    cookie = document.cookie;
+    console.log(cookie);
+    if (cookie) {
+      props = {};
+      return React.render(React.createElement(New, props), document.getElementById('content'));
+    } else {
+      props = {
+        warning: 'You must be logged in to create a job posting'
+      };
+      return React.render(React.createElement(LogIn, props), document.getElementById('content'));
+    }
   }
 };
 
@@ -205,7 +214,9 @@ User = (function() {
   User.create = function(opts) {
     return new Promise(function(r) {
       console.log(opts);
-      return r();
+      return r({
+        id: 'userId'
+      });
     });
   };
 
@@ -215,7 +226,9 @@ User = (function() {
       if (_.isEmpty(opts)) {
         return reject('Incorrect username or password');
       } else {
-        return resolve('userId');
+        return resolve({
+          id: 'userId'
+        });
       }
     });
   };
@@ -1027,8 +1040,13 @@ UserLogIn = React.createClass({
     var onFailure, onSuccess;
     onSuccess = (function(_this) {
       return function(user) {
+        document.cookie = 'sessionID=' + user.id;
         console.log(user);
-        return ClientRouter.show('/');
+        if (_this.props.warning) {
+          return ClientRouter.show('/job-postings/new');
+        } else {
+          return ClientRouter.show('/job-postings');
+        }
       };
     })(this);
     onFailure = (function(_this) {
@@ -1132,7 +1150,8 @@ UserSignUp = React.createClass({
     ev.preventDefault();
     if (this.state.passwordConfirmationIsValid) {
       return User.create(this.state.formData).then(function(user) {
-        return ClientRouter.show('/');
+        document.cookie = 'sessionID=' + user.id;
+        return ClientRouter.show('/job-postings');
       });
     }
   },
