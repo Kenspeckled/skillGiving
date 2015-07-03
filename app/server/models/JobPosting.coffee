@@ -6,7 +6,7 @@ class JobPosting
       if _.isEmpty(opts)
         reject('Could not create Job Posting')
       else
-        resolve('JobPosting')
+        resolve(url: 'JobPosting')
 
   @find = (opts) ->
     new Promise (resolve, reject) ->

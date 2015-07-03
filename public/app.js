@@ -170,7 +170,9 @@ JobPosting = (function() {
       if (_.isEmpty(opts)) {
         return reject('Could not create Job Posting');
       } else {
-        return resolve('JobPosting');
+        return resolve({
+          url: 'JobPosting'
+        });
       }
     });
   };
@@ -629,9 +631,9 @@ module.exports = Footer;
 
 
 },{}],"/home/richard/projects/kenspeckle/skillGiving/app/views/components/header/Header.coffee":[function(require,module,exports){
-var Header, div, header, ref;
+var Header, a, div, header, ref;
 
-ref = React.DOM, header = ref.header, div = ref.div;
+ref = React.DOM, header = ref.header, div = ref.div, a = ref.a;
 
 Header = React.createClass({
   displayName: 'Header',
@@ -648,16 +650,28 @@ Header = React.createClass({
     }, div({
       className: 'row'
     }, div({
-      className: 'col-sm-8'
-    }, div(null, 'Skill Giving')), div({
+      className: 'col-sm-4'
+    }, a({
+      href: '/job-postings'
+    }, 'Skill Giving')), div({
+      className: 'col-sm-4'
+    }, a({
+      href: '/job-postings/new'
+    }, 'Create new Job Posting')), div({
       className: 'col-sm-2'
     }, div({
       className: 'karma-level'
     }, 'Karma: ' + this.state.karma)), div({
-      className: 'col-sm-2'
-    }, div({
-      className: 'user-account'
-    }, 'Account')))));
+      className: 'col-sm-1'
+    }, a({
+      className: 'user-account',
+      href: '/log-in'
+    }, 'log in')), div({
+      className: 'col-sm-1'
+    }, a({
+      className: 'user-account',
+      href: '/sign-up'
+    }, 'sign up')))));
   }
 });
 
