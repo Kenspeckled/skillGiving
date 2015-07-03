@@ -1,4 +1,5 @@
 Promise = require 'promise'
+MongoClient = require('mongodb').MongoClient
 
 class ObjectOrientedRecord
 
