@@ -126,15 +126,22 @@ module.exports = jobPostingController;
 
 
 },{"views/components/jobPosting/Index.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/jobPosting/Index.coffee","views/components/jobPosting/Show.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/jobPosting/Show.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/client/controllers/user.coffee":[function(require,module,exports){
-var SignUp, userController;
+var LogIn, SignUp, userController;
 
 SignUp = require('views/components/user/SignUp.coffee');
+
+LogIn = require('views/components/user/LogIn.coffee');
 
 userController = {
   "new": function() {
     var props;
     props = {};
     return React.render(React.createElement(SignUp, props), document.getElementById('content'));
+  },
+  logIn: function() {
+    var props;
+    props = {};
+    return React.render(React.createElement(LogIn, props), document.getElementById('content'));
   }
 };
 
@@ -142,7 +149,7 @@ module.exports = userController;
 
 
 
-},{"views/components/user/SignUp.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/user/SignUp.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/client/models/User.coffee":[function(require,module,exports){
+},{"views/components/user/LogIn.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/user/LogIn.coffee","views/components/user/SignUp.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/components/user/SignUp.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/client/models/User.coffee":[function(require,module,exports){
 var User;
 
 User = (function() {
@@ -152,6 +159,13 @@ User = (function() {
     return new Promise(function(r) {
       console.log(opts);
       return r();
+    });
+  };
+
+  User.find = function(opts) {
+    return new Promise(function(resolve, reject) {
+      console.log(opts);
+      return reject('Incorrect username or password');
     });
   };
 
@@ -533,6 +547,7 @@ routes = function(router) {
   router.get('/job-postings', jobPostingController.index);
   router.get('/job-posting/:id', jobPostingController.show);
   router.get('/sign-up', userController["new"]);
+  router.get('/log-in', userController.logIn);
   if (_scriptContext.isClient) {
     return router.start();
   } else if (_scriptContext.isServer) {
@@ -767,7 +782,102 @@ module.exports = JobPostingsShow;
 
 
 
-},{"views/layouts/base.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/layouts/base.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/views/components/user/SignUp.coffee":[function(require,module,exports){
+},{"views/layouts/base.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/layouts/base.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/views/components/user/LogIn.coffee":[function(require,module,exports){
+var BaseLayout, User, UserLogIn, button, div, form, input, label, ref;
+
+BaseLayout = require('views/layouts/base.coffee');
+
+User = require('models/User.coffee');
+
+ref = React.DOM, div = ref.div, label = ref.label, input = ref.input, form = ref.form, button = ref.button;
+
+UserLogIn = React.createClass({
+  displayName: 'UserLogIn',
+  getInitialState: function() {
+    return {
+      formData: {},
+      error: ''
+    };
+  },
+  handleSubmit: function(ev) {
+    var onFailure, onSuccess;
+    onSuccess = (function(_this) {
+      return function(user) {
+        return ClientRouter.show('/');
+      };
+    })(this);
+    onFailure = (function(_this) {
+      return function(error) {
+        console.log("error", error);
+        return _this.setState({
+          error: error
+        });
+      };
+    })(this);
+    ev.preventDefault();
+    return User.find(this.state.formData).then(onSuccess, onFailure);
+  },
+  handleFormChange: function(ev) {
+    return this.state.formData[ev.target.name] = ev.target.value;
+  },
+  render: function() {
+    return React.createElement(BaseLayout, this.props, form({
+      className: 'log-in',
+      onSubmit: this.handleSubmit,
+      onChange: this.handleFormChange
+    }, this.state.error ? div({
+      className: 'row'
+    }, div({
+      className: 'col-sm-12'
+    }, div({
+      className: 'error-message'
+    }, this.state.error))) : void 0, div({
+      className: 'row'
+    }, div({
+      className: 'field'
+    }, div({
+      className: 'col-sm-4'
+    }, label({
+      className: 'label'
+    }, 'Email')), div({
+      className: 'col-sm-8'
+    }, input({
+      className: 'input ' + (this.state.error ? 'invalid' : ''),
+      name: 'email',
+      type: 'text',
+      autoComplete: 'false'
+    })))), div({
+      className: 'row'
+    }, div({
+      className: 'field'
+    }, div({
+      className: 'col-sm-4'
+    }, label({
+      className: 'label'
+    }, 'Password')), div({
+      className: 'col-sm-8'
+    }, input({
+      className: 'input ' + (this.state.error ? 'invalid' : ''),
+      name: 'password',
+      type: 'password',
+      autoComplete: 'false'
+    })))), div({
+      className: 'row'
+    }, div({
+      className: 'col-sm-12'
+    }, div({
+      className: 'text-right'
+    }, button({
+      className: 'btn btn-primary'
+    }, 'Log in'))))));
+  }
+});
+
+module.exports = UserLogIn;
+
+
+
+},{"models/User.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/client/models/User.coffee","views/layouts/base.coffee":"/home/richard/projects/kenspeckle/skillGiving/app/views/layouts/base.coffee"}],"/home/richard/projects/kenspeckle/skillGiving/app/views/components/user/SignUp.coffee":[function(require,module,exports){
 var BaseLayout, User, UserSignUp, button, div, form, input, label, ref;
 
 BaseLayout = require('views/layouts/base.coffee');

@@ -7,6 +7,7 @@ routes = (router) ->
   router.get '/job-postings', jobPostingController.index
   router.get '/job-posting/:id', jobPostingController.show
   router.get '/sign-up', userController.new
+  router.get '/log-in', userController.logIn
 
   if _scriptContext.isClient
     router.start()

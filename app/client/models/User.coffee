@@ -5,4 +5,10 @@ class User
       console.log opts
       r()
 
+
+  @find = (opts) ->
+    new Promise (resolve, reject) ->
+      console.log opts
+      reject('Incorrect username or password')
+
 module.exports = User

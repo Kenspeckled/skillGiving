@@ -1183,3 +1183,20 @@ textarea.input {
     background-color: green; }
   .sign-up .invalid {
     background-color: red; }
+
+/******************/
+/* User > Log In  */
+/******************/
+.log-in {
+  margin: 25%; }
+  .log-in .field {
+    margin: 5px 0; }
+  .log-in button {
+    margin: 20px 0; }
+  .log-in .valid {
+    background-color: green; }
+  .log-in .invalid {
+    background-color: red; }
+  .log-in .error-message {
+    color: red;
+    text-align: center; }
